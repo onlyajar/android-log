@@ -4,9 +4,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven { url "https://jitpack.io" }
-        maven {// 添加Maven的本地依赖
-            url("E://repository")
-        }
     }
 }
 dependencyResolutionManagement {
@@ -15,10 +12,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven {// 添加Maven的本地依赖
-            url("E://repository")
-        }
-
     }
 }
 
