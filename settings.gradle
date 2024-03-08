@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "log"
+rootProject.name = "android-log"
 include ':app'
 include ':android-log'
