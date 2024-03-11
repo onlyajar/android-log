@@ -34,9 +34,9 @@ public class LogLevel {
      */
     public static final int ASSERT = Log.ASSERT;
 
-    public static String getLevelName(int Level) {
+    public static String getLevelName(int level) {
         String levelName;
-        switch (Level) {
+        switch (level) {
             case VERBOSE:
                 levelName = "VERBOSE";
                 break;
@@ -56,11 +56,7 @@ public class LogLevel {
                 levelName = "ASSERT";
                 break;
             default:
-                if (Level < VERBOSE) {
-                    levelName = "VERBOSE-" + (VERBOSE - Level);
-                } else {
-                    levelName = "ASSERT+" + (Level - ASSERT);
-                }
+                levelName = "LEVEL UNKNOWN " + level;
                 break;
         }
         return levelName;
