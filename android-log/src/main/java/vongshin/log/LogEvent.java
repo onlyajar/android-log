@@ -9,6 +9,10 @@ final public class LogEvent {
 
     private Throwable tr;
 
+    private String thread;
+
+    private String dateTime;
+
     public LogEvent(int level, String tag, String message) {
        this(level, tag, message, null);
     }
@@ -18,6 +22,15 @@ final public class LogEvent {
         this.tag = tag;
         this.message = message;
         this.tr = tr;
+    }
+
+    public LogEvent(int level, String tag, String message, Throwable tr, String thread, String dateTime) {
+        this.level = level;
+        this.tag = tag;
+        this.message = message;
+        this.tr = tr;
+        this.thread = thread;
+        this.dateTime = dateTime;
     }
 
     public int getLevel() {
@@ -50,5 +63,13 @@ final public class LogEvent {
 
     public void setTr(Throwable tr) {
         this.tr = tr;
+    }
+
+    public String getThread() {
+        return thread;
+    }
+
+    public String getDateTime() {
+        return dateTime;
     }
 }
