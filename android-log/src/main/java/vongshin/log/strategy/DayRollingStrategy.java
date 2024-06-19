@@ -33,8 +33,7 @@ public class DayRollingStrategy implements RollingStrategy{
         if(!realFile.exists()){
             try {
                 realFile.createNewFile();
-                // TODO:SHIN 2024/6/19 delete 
-
+                deleteOldFile(rootDir, name, retainDay);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -51,5 +50,15 @@ public class DayRollingStrategy implements RollingStrategy{
             realName = name.substring(0, index) + "."+ date + name.substring(index);
         }
         return realName;
+    }
+
+    private void deleteOldFile(File dir, String name, int days){
+        String bounds = getRealName(name, DateUtils.getBeforeDate(days));
+        File[] files = dir.listFiles();
+        for (File f: files) {
+            if(f.isFile() && f.getName().startsWith(name) && bounds.compareTo(f.getName()) > 0) {
+                f.delete();
+            }
+        }
     }
 }

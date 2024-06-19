@@ -18,8 +18,7 @@ public abstract class FileAppender implements Appender {
     HandlerThread handlerThread = new HandlerThread("log-handler-thread");
     private Handler handler = null;
     final LayoutEncoder layoutEncoder = new PatternLayoutEncoder();
-    final RollingStrategy rollingStrategy = getRollingStrategy();
-    private String filePath;
+    private final String filePath;
     public FileAppender(String filePath) {
         this.filePath = filePath;
         handlerThread.start();
@@ -37,9 +36,9 @@ public abstract class FileAppender implements Appender {
         String logEncode = layoutEncoder.encode(event);
         handler.post(()->{
             File file = getFile(filePath);
-            boolean rolling = rollingStrategy.isRolling(file);
+            boolean rolling = getRollingStrategy().isRolling(file);
             if(rolling){
-                file =  rollingStrategy.getWriteFile(file);
+                file =  getRollingStrategy().getWriteFile(file);
             }
             FileOutWriter fileOutWriter = new FileOutWriter(file);
             fileOutWriter.writeln(logEncode);

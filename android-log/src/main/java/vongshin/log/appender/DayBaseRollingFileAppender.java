@@ -22,7 +22,6 @@ public class DayBaseRollingFileAppender extends FileAppender{
     @Override
     public File getFile(String filePath) {
         File configFile = new File(filePath);
-
-        return null;
+        return rollingStrategy.getWriteFile(configFile);
     }
 }
