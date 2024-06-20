@@ -6,6 +6,7 @@ import vongshin.log.LogEvent;
 import vongshin.log.encoder.LayoutEncoder;
 import vongshin.log.encoder.PatternLayoutEncoder;
 import vongshin.log.file.FileOutWriter;
+import vongshin.log.rolling.TriggeringPolicy;
 import vongshin.log.strategy.RollingStrategy;
 
 import java.io.File;
@@ -18,9 +19,7 @@ public abstract class FileAppender implements Appender {
     HandlerThread handlerThread = new HandlerThread("log-handler-thread");
     private Handler handler = null;
     final LayoutEncoder layoutEncoder = new PatternLayoutEncoder();
-    private final String filePath;
-    public FileAppender(String filePath) {
-        this.filePath = filePath;
+    public FileAppender() {
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
     }
@@ -35,10 +34,10 @@ public abstract class FileAppender implements Appender {
         LogEvent event = newLogEvent(level, tag, msg, t);
         String logEncode = layoutEncoder.encode(event);
         handler.post(()->{
-            File file = getFile(filePath);
-            boolean rolling = getRollingStrategy().isRolling(file);
+            File file = getRollingStrategy().getRealFile();
+            boolean rolling = getTriggeringPolicy().isTriggeringEvent(file);
             if(rolling){
-                file =  getRollingStrategy().getWriteFile(file);
+                file =  getRollingStrategy().getRollingFile();
             }
             FileOutWriter fileOutWriter = new FileOutWriter(file);
             fileOutWriter.writeln(logEncode);
@@ -51,8 +50,8 @@ public abstract class FileAppender implements Appender {
         return new LogEvent(level, tag, msg, t, thread, dateTime);
     }
 
-    public abstract RollingStrategy getRollingStrategy();
+    public abstract TriggeringPolicy getTriggeringPolicy();
 
-    public abstract File getFile(String filePath);
+    public abstract RollingStrategy getRollingStrategy();
 
 }

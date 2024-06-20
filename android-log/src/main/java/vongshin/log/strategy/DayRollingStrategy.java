@@ -2,38 +2,35 @@ package vongshin.log.strategy;
 
 import java.io.File;
 import java.io.IOException;
-
-import vongshin.log.rolling.DayBasedTriggeringPolicy;
-import vongshin.log.rolling.TriggeringPolicy;
 import vongshin.log.utils.DateUtils;
 import vongshin.log.utils.FileUtils;
 
 public class DayRollingStrategy implements RollingStrategy{
 
     private final int retainDay;
+    private final File rootDir;
+    private final String name;
 
-    private final TriggeringPolicy triggering;
-
-    public DayRollingStrategy(int retainDay) {
+    public DayRollingStrategy(int retainDay, String filePath) {
         this.retainDay = retainDay;
-        triggering = new DayBasedTriggeringPolicy(retainDay);
+        File file = new File(filePath);
+        rootDir = FileUtils.getDirAndMake(file);
+        name = file.getName();
     }
 
     @Override
-    public boolean isRolling(File file) {
-        return triggering.isTriggeringEvent(file);
+    public File getRealFile() {
+        String realName = getRealName(DateUtils.getDate());
+        return new File(rootDir, realName);
     }
 
     @Override
-    public File getWriteFile(File file) {
-        File rootDir = FileUtils.getDirAndMake(file);
-        String name = file.getName();
-        String realName = getRealName(name, DateUtils.getDate());
-        File realFile = new File(rootDir, realName);
+    public File getRollingFile() {
+        File realFile = getRealFile();
         if(!realFile.exists()){
             try {
                 realFile.createNewFile();
-                deleteOldFile(rootDir, name, retainDay);
+                deleteOldFile(rootDir, retainDay);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -41,7 +38,7 @@ public class DayRollingStrategy implements RollingStrategy{
         return realFile;
     }
 
-    private String getRealName(String name, String date){
+    private String getRealName(String date){
         String realName;
         int index = name.lastIndexOf('.');
         if(index < 0){
@@ -52,13 +49,24 @@ public class DayRollingStrategy implements RollingStrategy{
         return realName;
     }
 
-    private void deleteOldFile(File dir, String name, int days){
-        String bounds = getRealName(name, DateUtils.getBeforeDate(days));
+
+    private void deleteOldFile(File dir, int days){
+        String bounds = getRealName(DateUtils.getBeforeDate(days));
+        String namePrefix = getNamePrefix();
         File[] files = dir.listFiles();
         for (File f: files) {
-            if(f.isFile() && f.getName().startsWith(name) && bounds.compareTo(f.getName()) > 0) {
+            if(f.isFile() && f.getName().startsWith(namePrefix) && bounds.compareTo(f.getName()) > 0) {
                 f.delete();
             }
+        }
+    }
+
+    private String getNamePrefix(){
+        int index = name.lastIndexOf('.');
+        if(index < 0){
+            return name;
+        }else {
+            return name.substring(0, index);
         }
     }
 }

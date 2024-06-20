@@ -6,6 +6,7 @@ import java.util.List;
 import vongshin.log.appender.Appender;
 import vongshin.log.appender.DayBaseRollingFileAppender;
 import vongshin.log.appender.LogCatAppender;
+import vongshin.log.appender.SizeBaseRollingFileAppender;
 
 public final class LogConfiguration {
 
@@ -34,6 +35,11 @@ public final class LogConfiguration {
         logAppenderList.add(new DayBaseRollingFileAppender(day, filePath));
         return this;
     }
+    public LogConfiguration addSizeBasedAppender(int count, String size, String filePath){
+        logAppenderList.add(new SizeBaseRollingFileAppender(count, size, filePath));
+        return this;
+    }
+
 
     public LogConfiguration setLevel(int level){
         logLevel = level;

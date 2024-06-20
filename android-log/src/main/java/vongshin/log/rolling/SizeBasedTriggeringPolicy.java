@@ -6,7 +6,7 @@ import vongshin.log.file.FileSize;
 
 public class SizeBasedTriggeringPolicy implements TriggeringPolicy{
 
-    private FileSize fileSize;
+    private final FileSize fileSize;
 
     public SizeBasedTriggeringPolicy(FileSize fileSize) {
         this.fileSize = fileSize;

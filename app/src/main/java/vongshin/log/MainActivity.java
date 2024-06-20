@@ -2,6 +2,7 @@ package vongshin.log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import java.io.File;
 
@@ -12,12 +13,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        File file = new File("sdcard/soga/mis.log");
-        File rootDir = file.getParentFile();
-        String name = file.getName();
-        Log.d(TAG, "rootDir: " + file.exists());
-        Log.d(TAG, "rootDir: " + rootDir);
-        Log.d(TAG, "name: " + name);
+        findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(()->{
+                    for (int i = 0; i < 10000; i++) {
+                        Log.i(TAG, "MainActivity onClick: " + i);
+                    }
+                }).start();
+            }
+        });
     }
     public static File getDirAndMake(File file){
         File rootDir = file.getParentFile();
