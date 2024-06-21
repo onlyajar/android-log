@@ -3,7 +3,6 @@ package vongshin.log.file;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 final public class FileOutWriter implements AutoCloseable {
     private FileWriter writer;
@@ -28,7 +27,8 @@ final public class FileOutWriter implements AutoCloseable {
         try {
             writer.write(data+ System.lineSeparator());
             writer.flush();
-        } catch (IOException e) {
+            close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

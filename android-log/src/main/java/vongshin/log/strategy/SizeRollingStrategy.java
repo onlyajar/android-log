@@ -5,11 +5,11 @@ import java.io.IOException;
 import vongshin.log.utils.FileUtils;
 
 public class SizeRollingStrategy implements RollingStrategy{
-    private final int logCount;
+    private final int backupFiles;
     private final File rootDir;
     private final String name;
-    public SizeRollingStrategy(int logCount, String filePath) {
-        this.logCount = logCount;
+    public SizeRollingStrategy(int backupFiles, String filePath) {
+        this.backupFiles = backupFiles;
         File file = new File(filePath);
         rootDir = FileUtils.getDirAndMake(file);
         name = file.getName();
@@ -38,9 +38,9 @@ public class SizeRollingStrategy implements RollingStrategy{
 
     @Override
     public File getRollingFile() {
-        File maxFile = new File(rootDir, getBackupName(logCount));
+        File maxFile = new File(rootDir, getBackupName(backupFiles));
         if(maxFile.exists()) maxFile.delete();
-        for (int i = logCount -1 ; i > 0 ; i--) {
+        for (int i = backupFiles -1; i > 0 ; i--) {
             renameFileToUp(i);
         }
         File file = new File(rootDir, name);

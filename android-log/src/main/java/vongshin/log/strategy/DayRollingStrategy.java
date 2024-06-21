@@ -7,12 +7,12 @@ import vongshin.log.utils.FileUtils;
 
 public class DayRollingStrategy implements RollingStrategy{
 
-    private final int retainDay;
+    private final int backupDays;
     private final File rootDir;
     private final String name;
 
-    public DayRollingStrategy(int retainDay, String filePath) {
-        this.retainDay = retainDay;
+    public DayRollingStrategy(int backupDays, String filePath) {
+        this.backupDays = backupDays;
         File file = new File(filePath);
         rootDir = FileUtils.getDirAndMake(file);
         name = file.getName();
@@ -30,7 +30,7 @@ public class DayRollingStrategy implements RollingStrategy{
         if(!realFile.exists()){
             try {
                 realFile.createNewFile();
-                deleteOldFile(rootDir, retainDay);
+                deleteOldFile(rootDir, backupDays);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -32,15 +32,18 @@ public abstract class FileAppender implements Appender {
     @Override
     public void println(int level, String tag, String msg, Throwable t) {
         LogEvent event = newLogEvent(level, tag, msg, t);
-        String logEncode = layoutEncoder.encode(event);
-        handler.post(()->{
-            File file = getRollingStrategy().getRealFile();
-            boolean rolling = getTriggeringPolicy().isTriggeringEvent(file);
-            if(rolling){
-                file =  getRollingStrategy().getRollingFile();
+        final String logEncode = layoutEncoder.encode(event);
+        handler.post(new Runnable() {
+            @Override
+            public void run(){
+                File file = getRollingStrategy().getRealFile();
+                boolean rolling = getTriggeringPolicy().isTriggeringEvent(file);
+                if(rolling){
+                    file =  getRollingStrategy().getRollingFile();
+                }
+                FileOutWriter fileOutWriter = new FileOutWriter(file);
+                fileOutWriter.writeln(logEncode);
             }
-            FileOutWriter fileOutWriter = new FileOutWriter(file);
-            fileOutWriter.writeln(logEncode);
         });
     }
 

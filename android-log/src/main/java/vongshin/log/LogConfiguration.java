@@ -31,12 +31,25 @@ public final class LogConfiguration {
         return this;
     }
 
-    public LogConfiguration addDayBasedAppender(int day, String filePath){
-        logAppenderList.add(new DayBaseRollingFileAppender(day, filePath));
+    /**
+     * @param backupDays 备份文件的天数，min=0
+     * @param filePath 文件路径
+     * @return 文件配置
+     */
+    public LogConfiguration addDayBasedAppender(int backupDays, String filePath){
+        logAppenderList.add(new DayBaseRollingFileAppender(backupDays, filePath));
         return this;
     }
-    public LogConfiguration addSizeBasedAppender(int count, String size, String filePath){
-        logAppenderList.add(new SizeBaseRollingFileAppender(count, size, filePath));
+
+    /**
+     *
+     * @param backupFiles 备份文件数量， min=0
+     * @param fileSize 文件容量 eg. 10KB 10MB 10GB
+     * @param filePath 文件路径
+     * @return 文件配置
+     */
+    public LogConfiguration addSizeBasedAppender(int backupFiles, String fileSize, String filePath){
+        logAppenderList.add(new SizeBaseRollingFileAppender(backupFiles, fileSize, filePath));
         return this;
     }
 

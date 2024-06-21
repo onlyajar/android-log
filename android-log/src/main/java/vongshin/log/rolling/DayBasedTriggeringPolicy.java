@@ -1,10 +1,6 @@
 package vongshin.log.rolling;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-
-import vongshin.log.file.FileSize;
 import vongshin.log.utils.DateUtils;
 
 public class DayBasedTriggeringPolicy implements TriggeringPolicy{

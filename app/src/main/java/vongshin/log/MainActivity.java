@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new Thread(()->{
-                    for (int i = 0; i < 10000; i++) {
+                    for (int i = 0; i < 100; i++) {
                         Log.i(TAG, "MainActivity onClick: " + i);
                     }
                 }).start();
