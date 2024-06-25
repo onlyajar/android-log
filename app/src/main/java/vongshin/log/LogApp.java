@@ -10,7 +10,7 @@ public class LogApp extends Application {
         LogConfiguration.getInstance()
                 .addLogcatAppender()
                 .addDayBasedAppender(2, "sdcard/aloga/likemis.log")
-                .addSizeBasedAppender(3, "5KB", "sdcard/alogb/likemis.log")
+                .addSizeBasedAppender(3, "5MB", "sdcard/alogb/likemis.log")
                 .setLevel(LogLevel.DEBUG);
     }
 }

@@ -1,7 +1,9 @@
 package vongshin.log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vongshin.log.appender.Appender;
 import vongshin.log.appender.DayBaseRollingFileAppender;
@@ -20,14 +22,20 @@ public final class LogConfiguration {
     }
 
     private final List<Appender> logAppenderList = new ArrayList<>();
+
+    private final Map<Class<?>, Appender> logAppenderMap = new HashMap<>();
+
     private int logLevel = LogLevel.DEBUG;
+
     public LogConfiguration addAppender(Appender appender){
-        logAppenderList.add(appender);
+        logAppenderMap.put(appender.getClass(), appender);
+        resetAppenderList();
         return this;
     }
 
     public LogConfiguration addLogcatAppender(){
-        logAppenderList.add(new LogCatAppender());
+        logAppenderMap.put(LogCatAppender.class, new LogCatAppender());
+        resetAppenderList();
         return this;
     }
 
@@ -37,7 +45,8 @@ public final class LogConfiguration {
      * @return 文件配置
      */
     public LogConfiguration addDayBasedAppender(int backupDays, String filePath){
-        logAppenderList.add(new DayBaseRollingFileAppender(backupDays, filePath));
+        logAppenderMap.put(DayBaseRollingFileAppender.class,new DayBaseRollingFileAppender(backupDays, filePath));
+        resetAppenderList();
         return this;
     }
 
@@ -49,7 +58,8 @@ public final class LogConfiguration {
      * @return 文件配置
      */
     public LogConfiguration addSizeBasedAppender(int backupFiles, String fileSize, String filePath){
-        logAppenderList.add(new SizeBaseRollingFileAppender(backupFiles, fileSize, filePath));
+        logAppenderMap.put(SizeBaseRollingFileAppender.class, new SizeBaseRollingFileAppender(backupFiles, fileSize, filePath));
+        resetAppenderList();
         return this;
     }
 
@@ -65,5 +75,12 @@ public final class LogConfiguration {
 
     public List<Appender> getLogAppender() {
         return logAppenderList;
+    }
+
+    private void resetAppenderList(){
+        logAppenderList.clear();
+        for(Map.Entry<Class<?>, Appender> entry : logAppenderMap.entrySet()){
+            logAppenderList.add(entry.getValue());
+        }
     }
 }
