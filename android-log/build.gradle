@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
+//    id 'maven-publish'
 }
 android {
     namespace 'vongshin.log'
@@ -21,27 +21,27 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
-    }
+//    publishing {
+//        singleVariant('release') {
+//            withSourcesJar()
+//        }
+//    }
 }
 dependencies {
 }
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = android.namespace
-                artifactId = "$project.name"
-                version = android.defaultConfig.versionName
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            // Creates a Maven publication called "release".
+//            release(MavenPublication) {
+//                from components.release
+//                groupId = android.namespace
+//                artifactId = "$project.name"
+//                version = android.defaultConfig.versionName
+//            }
+//        }
+//    }
+//}
 //publishing {
 //    publications {
 //        release(MavenPublication) {
