@@ -1,5 +1,8 @@
 package vongshin.log;
 
+import android.app.Application;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +14,7 @@ import vongshin.log.appender.LogCatAppender;
 import vongshin.log.appender.SizeBaseRollingFileAppender;
 
 public final class LogConfiguration {
-
+    private static String LOG_NAME = "journal.log";
     private static class Holder{
         static LogConfiguration INSTANCE = new LogConfiguration();
     }
@@ -62,7 +65,36 @@ public final class LogConfiguration {
         resetAppenderList();
         return this;
     }
+    public LogConfiguration setDefaultSizeBasedConfiguration(){
+        String pathFile = getDefaultFilePath() + LOG_NAME;
+        addLogcatAppender();
+        addSizeBasedAppender(3, "10MB", pathFile);
+        setLevel(LogLevel.INFO);
+        return this;
+    }
 
+    public LogConfiguration setDefaultHistoryConfiguration(){
+        String pathFile = getDefaultFilePath() + LOG_NAME;
+        addLogcatAppender();
+        addDayBasedAppender(30, pathFile);
+        setLevel(LogLevel.INFO);
+        return this;
+    }
+
+    public String getDefaultFilePath(){
+        String packageName = getApplication().getPackageName();
+        return "sdcard/applog/"+packageName+"/";
+    }
+    public  <T extends Application> T getApplication() {
+        try {
+            Class<?> threadClazz = Class.forName("android.app.AppGlobals");
+            Method method = threadClazz.getMethod("getInitialApplication");
+            return (T) method.invoke(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public LogConfiguration setLevel(int level){
         logLevel = level;
