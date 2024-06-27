@@ -7,7 +7,7 @@ public class FileUtils {
     public static File getDirAndMake(File file){
         File rootDir = file.getParentFile();
         if(!rootDir.exists()){
-            boolean re = rootDir.mkdir();
+            boolean re = rootDir.mkdirs();
             System.out.println("make dir = " + re);
         }
         return rootDir;

@@ -72,12 +72,27 @@ public final class LogConfiguration {
         setLevel(LogLevel.INFO);
         return this;
     }
+    public LogConfiguration setDefaultSizeBasedConfiguration(int logLevel){
+        String pathFile = getDefaultFilePath() + LOG_NAME;
+        addLogcatAppender();
+        addSizeBasedAppender(3, "10MB", pathFile);
+        setLevel(logLevel);
+        return this;
+    }
 
     public LogConfiguration setDefaultHistoryConfiguration(){
         String pathFile = getDefaultFilePath() + LOG_NAME;
         addLogcatAppender();
         addDayBasedAppender(30, pathFile);
         setLevel(LogLevel.INFO);
+        return this;
+    }
+
+    public LogConfiguration setDefaultHistoryConfiguration(int logLevel){
+        String pathFile = getDefaultFilePath() + LOG_NAME;
+        addLogcatAppender();
+        addDayBasedAppender(30, pathFile);
+        setLevel(logLevel);
         return this;
     }
 
